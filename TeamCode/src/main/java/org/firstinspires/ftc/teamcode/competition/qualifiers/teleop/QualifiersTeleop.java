@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.competition.qualifiers.teleop;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -33,6 +35,12 @@ public class QualifiersTeleop extends LinearOpMode {
     double currentPitch = 0;
     double currentRoll = 0;
 
+    double distanceToRamp = 0;
+    double distanceToPixel = 0;
+
+    double pixelSensorDistance = 0;
+
+
 
 
     DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
@@ -50,9 +58,13 @@ public class QualifiersTeleop extends LinearOpMode {
             RevHubOrientationOnRobot.LogoFacingDirection.UP,
             RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
 
+    private DistanceSensor pixelSensor;
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        pixelSensor = hardwareMap.get(DistanceSensor.class, "pixelSensor");
+
         imu.initialize(parameters);
 
         frontRightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
