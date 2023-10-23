@@ -23,6 +23,9 @@ public class QualifiersTeleop extends LinearOpMode {
 
     int slideLevelGround = 0;
 
+    int hangUp = 0;
+    int liftUp = 0;
+
     float slideKi = 0;
     float slideKp = 0;
     float slideKd = 0;
@@ -51,6 +54,8 @@ public class QualifiersTeleop extends LinearOpMode {
     DcMotor leftSlideMotor = hardwareMap.dcMotor.get("leftSlideMotor");
     DcMotor rightSlideMotor = hardwareMap.dcMotor.get("rightSlideMotor");
 
+    DcMotor hangMotor = hardwareMap.dcMotor.get("hangMotor");
+
     Servo droneLauncher = hardwareMap.servo.get("droneLauncher");
 
     IMU imu = hardwareMap.get(IMU.class, "imu");
@@ -78,6 +83,10 @@ public class QualifiersTeleop extends LinearOpMode {
         leftSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        hangMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        hangMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        hangMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
 
         waitForStart();
@@ -93,6 +102,14 @@ public class QualifiersTeleop extends LinearOpMode {
 
             if (gamepad1.dpad_left){
                 pixelsPossesed = 1;
+            }
+
+            if (gamepad1.left_bumper){
+                moveMotorTicks(hangUp, hangMotor, 0.75);
+            }
+
+            if (gamepad1.right_bumper){
+                moveMotorTicks(liftUp, hangMotor, -1);
             }
 
             if (gamepad1.dpad_right){
@@ -148,6 +165,15 @@ public class QualifiersTeleop extends LinearOpMode {
             backRightMotor.setPower(backRightPower);
 
 
+        }
+    }
+    public void moveMotorTicks(int ticks, DcMotor motor, double power){
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor.setTargetPosition(ticks);
+        motor.setPower(power);
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while (motor.isBusy()){
         }
     }
 
