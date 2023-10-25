@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.competition.qualifiers.teleop;
 
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,7 +11,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @TeleOp
 public class QualifiersTeleop extends LinearOpMode {
@@ -177,6 +175,9 @@ public class QualifiersTeleop extends LinearOpMode {
         }
     }
 
+    public void shootDrone(){
+
+    }
     public void moveSlideToPositionPID(DcMotor leftSlideMotor, DcMotor rightSlideMotor, float ticks, float Kp, float Ki, float Kd, float reference){
         double integralSum = 0;
         float lastError = 0;
@@ -203,6 +204,14 @@ public class QualifiersTeleop extends LinearOpMode {
                 if (gamepad1.right_trigger > 0){
                     intakeMotor.setPower(gamepad1.right_trigger);
                 }
+            }
+
+            if (gamepad1.left_bumper){
+                moveMotorTicks(hangUp, hangMotor, 0.75);
+            }
+
+            if (gamepad1.right_bumper){
+                moveMotorTicks(liftUp, hangMotor, -1);
             }
 
             if (gamepad1.dpad_left){
